@@ -97,6 +97,21 @@ class WebhookEvent(BaseModel):
     sender: Dict[str, Any]
     message: Dict[str, Any] = None
 
+# ---- Zalo Domain Verification ----
+# Serve the HTML file Zalo gave you
+@app.get("/zalo_verifierVVkmCuVa9IzywueJ_C8u2odXarN5bqGED3an.html")
+async def zalo_verification():
+    """
+    Zalo will call this endpoint to verify domain ownership.
+    Make sure the file `zalo_verifierVVkmCuVa9IzywueJ_C8u2odXarN5bqGED3an.html`
+    exists in your project root.
+    """
+    filepath = os.path.join(os.path.dirname(__file__),
+                            "zalo_verifierVVkmCuVa9IzywueJ_C8u2odXarN5bqGED3an.html")
+    if os.path.exists(filepath):
+        return FileResponse(filepath, media_type="text/html")
+    return JSONResponse({"error": "Verification file missing"}, status_code=404)
+
 @app.post("/zalo/webhook")
 async def zalo_webhook(event: WebhookEvent, request: Request):
     user_id = event.sender.get("id")

@@ -334,6 +334,14 @@ def welcome_line(profile: Dict[str, Any]) -> str:
     return w
 
 # =================== ROUTES ===================
+@app.get("/")
+def root():
+    return {"status": "ok", "msg": "Locaith AI webhook is alive"}
+
+@app.post("/")
+async def root_post():
+    return {"status": "ok"}
+
 @app.on_event("startup")
 async def on_start():
     print("Locaith AI – Zalo webhook (Agent) started 3.1.0")
